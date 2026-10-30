@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Сплэш и вход ППМ · main</title>
+<title>main</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap">
 <style>
@@ -70,25 +70,36 @@
   .screen.ready .r4 { transition-delay: .58s; }
   .no-tr, .no-tr * { transition: none !important; }
 
-  .a-text { position: absolute; left: 16px; top: 548px; width: 343px; display: flex; flex-direction: column; gap: 4px; }
-  .title { margin: 0; font-size: 28px; line-height: 32px; font-weight: 600; letter-spacing: -0.01em; color: var(--t1); }
-  .desc { margin: 0; font-size: 16px; line-height: 20px; color: var(--t2); }
+  .a-text { position: absolute; left: 16px; top: 348px; width: 343px; display: flex; flex-direction: column; gap: 0; text-align: center; }
+  .title { margin: 0; font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.015em; color: var(--t1); }
+  /* typewriter: letters are shown one by one by the script, a caret runs ahead of them */
+  .tag { margin: 0; font-size: 18px; line-height: 24px; font-weight: 400; color: var(--t1); white-space: nowrap; }  /* one line, as in the layout */
+  .tag .w { display: inline-block; white-space: nowrap; }
+  .tag .ch { display: inline-block; white-space: pre; visibility: hidden; }
+  .tag .ch.on { visibility: visible; }
+  .tag .caret { display: inline-block; width: 2px; height: 20px; margin: 0 -3px 0 1px; vertical-align: -3px; background: var(--t1); border-radius: 1px; }
+  .tag .caret.idle { animation: caret 1s steps(1, end) infinite; }
+  @keyframes caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  .tag .w, .tag .ch.sp { vertical-align: top; }
+  .tag:not(.m-type) .ch { visibility: visible; opacity: 0; }
+  .tag.m-decode .ch { text-align: center; }
+  /* dissolve: title, then tagline fade in while the logo is still moving up */
+  .a-text.m-fade { opacity: 1; transform: none; transition: none; }
+  .a-text.m-fade .title, .a-text.m-fade .tag { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .6s cubic-bezier(.2,.8,.2,1); }  /* same motion as the buttons */
+  .screen.ready .a-text.m-fade .title { opacity: 1; transform: none; transition-delay: .30s; }
+  .screen.ready .a-text.m-fade .tag { opacity: 1; transform: none; transition-delay: .38s; }
+  .tag.m-fade .ch { opacity: 1; }
+  .a-text.m-dec .tag { opacity: 1; transform: none; transition: none; }  /* decoder draws the tagline itself */
+  .desc { position: absolute; left: 16px; top: 588px; width: 343px; margin: 0; text-align: center; font-size: 16px; line-height: 20px; color: var(--t2); }
   .action { position: absolute; left: 16px; width: 343px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 18px; line-height: 24px; font-weight: 500; user-select: none; }
   .action.email { top: 640px; background: var(--tert); color: var(--t1); }
   .action.tid { top: 704px; background: var(--tid-bg); color: var(--tid-fg); }
   .action.tid svg { display: block; width: 37px; height: 20px; }
-  .disclaimer { position: absolute; left: 16px; top: 772px; width: 343px; margin: 0; text-align: left; font-size: 10px; line-height: 12px; color: var(--t3); }
+  .disclaimer { position: absolute; left: 16px; top: 772px; width: 343px; margin: 0; text-align: center; font-size: 10px; line-height: 12px; letter-spacing: 0.01em; color: var(--t3); }
   .disclaimer u { color: var(--t1); text-decoration: underline; }
 </style>
 
 <div class="bar">
-  <div class="seg load" role="group" aria-label="Время загрузки, секунды">
-    <button type="button" data-load="0.5" aria-pressed="false">0,5 с</button>
-    <button type="button" data-load="1" aria-pressed="false">1 с</button>
-    <button type="button" data-load="2" aria-pressed="true">2 с</button>
-    <button type="button" data-load="5" aria-pressed="false">5 с</button>
-    <button type="button" data-load="0" aria-pressed="false" title="Загрузка не заканчивается">∞</button>
-  </div>
   <button type="button" class="btn" id="replay">Ещё раз</button>
 </div>
 
@@ -109,10 +120,11 @@
       </svg>
     </div>
 
-    <div class="a-text reveal r1"><h2 class="title">Плати по всему миру</h2><p class="desc">Войдите или зарегистрируйтесь — это займёт пару минут, если аккаунта ещё нет</p></div>
+    <div class="a-text reveal r1"><h2 class="title">Плати по всему миру</h2><p class="tag" aria-label="Наша работа — ваша свобода платить!"><span class="w"><span class="ch" style="--i:0">Н</span><span class="ch" style="--i:1">а</span><span class="ch" style="--i:2">ш</span><span class="ch" style="--i:3">а</span></span><span class="ch sp" style="--i:4"> </span><span class="w"><span class="ch" style="--i:5">р</span><span class="ch" style="--i:6">а</span><span class="ch" style="--i:7">б</span><span class="ch" style="--i:8">о</span><span class="ch" style="--i:9">т</span><span class="ch" style="--i:10">а</span></span><span class="ch sp" style="--i:11"> </span><span class="w"><span class="ch" style="--i:12">—</span></span><span class="ch sp" style="--i:13"> </span><span class="w"><span class="ch" style="--i:14">в</span><span class="ch" style="--i:15">а</span><span class="ch" style="--i:16">ш</span><span class="ch" style="--i:17">а</span></span><span class="ch sp" style="--i:18"> </span><span class="w"><span class="ch" style="--i:19">с</span><span class="ch" style="--i:20">в</span><span class="ch" style="--i:21">о</span><span class="ch" style="--i:22">б</span><span class="ch" style="--i:23">о</span><span class="ch" style="--i:24">д</span><span class="ch" style="--i:25">а</span></span><span class="ch sp" style="--i:26"> </span><span class="w"><span class="ch" style="--i:27">п</span><span class="ch" style="--i:28">л</span><span class="ch" style="--i:29">а</span><span class="ch" style="--i:30">т</span><span class="ch" style="--i:31">и</span><span class="ch" style="--i:32">т</span><span class="ch" style="--i:33">ь</span><span class="ch" style="--i:34">!</span></span></p></div>
+    <p class="desc reveal r2">Войдите или зарегистрируйтесь — это<br>займёт пару минут, если аккаунта ещё нет</p>
     <div class="action email reveal r2">Войти по e-mail</div>
     <div class="action tid reveal r3">Войти с T‑ID <svg viewBox="0 0 37 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.99805 0.5H27.002C32.2474 0.500092 36.5 4.75327 36.5 10C36.5 15.2467 32.2474 19.4999 27.002 19.5H9.99805C4.75249 19.4999 0.5 15.2467 0.5 10C0.5 4.75327 4.75249 0.500092 9.99805 0.5Z" fill="#303030" stroke="white"/><path d="M5.80029 5.14136H16.5715V10.5593C16.5715 11.9484 15.8299 13.2322 14.6281 13.9267L11.1859 15.9144L7.74369 13.9267C6.54026 13.2322 5.80029 11.9484 5.80029 10.5593V5.14136Z" fill="#FFDD2D"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.75548 7.99341V9.67788C8.98642 9.41704 9.40432 9.24105 9.8835 9.24105H10.4035V11.2005C10.4035 11.7222 10.2621 12.1779 10.0516 12.4293H12.3155C12.1065 12.1779 11.9652 11.7222 11.9652 11.2021V9.24262H12.4852C12.9643 9.24262 13.3838 9.41861 13.6132 9.67946V7.99498H8.75391L8.75548 7.99341Z" fill="#333333"/><path d="M22.7207 13.3973V7.03027H20.7129V13.3973H22.7207Z" fill="white"/><path d="M27.5596 13.3973C30.1 13.3973 31.3569 12.046 31.3569 10.2138C31.3569 8.38162 30.0984 7.03027 27.7733 7.03027H24.1897V13.3973H27.5612H27.5596ZM27.357 8.55447C28.7348 8.55447 29.3098 9.17044 29.3098 10.2138C29.3098 11.177 28.7363 11.9124 27.357 11.9124H26.1268V8.55447H27.357Z" fill="white"/></svg></div>
-    <p class="disclaimer reveal r4">Авторизовываясь через сторонний сервис, я соглашаюсь с <u>Условиями использования</u> и <u>Политикой конфиденциальности</u></p>
+    <p class="disclaimer reveal r4">Авторизуясь, я соглашаюсь с <u>Условиями использования</u><br>и <u>Политикой конфиденциальности</u></p>
   </div>
 </div></div>
 
@@ -135,7 +147,7 @@
   var N = [0.469, 0.883];                                        // normal to the cuts (cuts run at about -28°)
   var FROM = [-18, -8, 8, 16];                                   // start offset of each segment along the normal, px
   var PERIOD = 4.5, AMP = 8;                                     // floating, same as the start screen
-  var LIFT = 0.8, LIFT_DY = 216 - 342;                           // logo goes up to its start-screen spot
+  var LIFT = 0.8, LIFT_DY = 180 - 342;                           // logo goes up to its start-screen spot
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) AMP = 0;
 
@@ -163,10 +175,91 @@
     // loading done (never before the logo is fully revealed)
     if (readyAt === null && loadLimit > 0 && t >= Math.max(loadLimit, REV_E)) { readyAt = t; screen.classList.add('ready'); }
     var ly = readyAt !== null ? LIFT_DY * easeInOut(clamp((t - readyAt) / LIFT)) : 0;
+    animTag(readyAt === null ? -1 : t - readyAt);
 
     logo.style.transform = 'translateY(' + (ly + fy).toFixed(2) + 'px)';
     requestAnimationFrame(frame);
   }
+
+  // ---- typewriter for the tagline ----
+  var chars = Array.prototype.slice.call(document.querySelectorAll('.tag .ch'));
+  var caret = document.createElement('span'); caret.className = 'caret'; caret.setAttribute('aria-hidden', 'true');
+  var TYPE_START = 0.75, CARET_IN = 0.45, CARET_OFF = 1.6;   // s from the moment loading is done
+  var TT = [], acc = TYPE_START;                              // time each letter is typed, with a human rhythm
+  chars.forEach(function (c, i) {
+    var ch = c.textContent, prev = i ? chars[i - 1].textContent : '';
+    acc += 0.058 + 0.018 * Math.sin(i * 2.7);                 // slightly uneven key presses
+    if (/\s/.test(prev)) acc += 0.035;                        // small pause after a space
+    if (prev === '—') acc += 0.14;                       // longer pause after the dash
+    TT.push(acc);
+  });
+  var shown = -2;
+  function placeCaret(n) {
+    if (n === 0) chars[0].parentNode.insertBefore(caret, chars[0]);
+    else { var c = chars[n - 1]; c.parentNode.insertBefore(caret, c.nextSibling); }
+  }
+  function typeTo(el) {
+    var n = 0; while (n < TT.length && TT[n] <= el) n++;
+    var caretOn = el >= CARET_IN && el < TT[TT.length - 1] + CARET_OFF;
+    var key = el < 0 ? -1 : n * 10 + (caretOn ? 1 : 0) + (n === TT.length ? 2 : 0);
+    if (key === shown) return; shown = key;
+    chars.forEach(function (c, i) { c.classList.toggle('on', i < n); });
+    if (caretOn) { placeCaret(n); caret.classList.toggle('idle', n === 0 || n === TT.length); }
+    else if (caret.parentNode) caret.parentNode.removeChild(caret);
+  }
+
+  // ---- other tagline variants: wave, beam, decode ----
+  var tagEl = document.querySelector('.tag'), mode = 'fade';
+  var ORIG = chars.map(function (c) { return c.textContent; }), BASE = chars.map(function (c) { return c.getAttribute('style') || ''; });
+  var GLYPHS = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ0123456789$€₽#%&*@';
+  var S = 0.6;                                                 // s after loading is done
+  function resetTag() {
+    chars.forEach(function (c, i) { c.setAttribute('style', BASE[i]); c.textContent = ORIG[i]; c.classList.remove('on'); });
+    if (caret.parentNode) caret.parentNode.removeChild(caret);
+    shown = -2;
+  }
+  function animTag(el) {
+    if (mode === 'type') return typeTo(el);
+    if (mode === 'fade') return;                               // the whole block fades in via CSS
+    chars.forEach(function (c, i) {
+      if (el < 0) { c.style.opacity = '0'; return; }
+      if (mode === 'wave') {                                   // letters rise and develop out of a soft vertical gradient
+        var p = clamp((el - S - i * 0.05) / 0.9), e = easeOut(p);
+        var top = (100 - 100 * e).toFixed(1), mask = 'linear-gradient(to top, transparent ' + (top * 0.6).toFixed(1) + '%, #000 ' + (top * 1 + 40 * (1 - e)).toFixed(1) + '%)';
+        c.style.opacity = (Math.min(1, p * 1.4)).toFixed(3);
+        c.style.transform = 'translateY(' + ((1 - e) * 55).toFixed(1) + '%)';
+        c.style.webkitMaskImage = p < 1 ? mask : 'none'; c.style.maskImage = p < 1 ? mask : 'none';
+      } else if (mode === 'beam') {                            // the line glimmers dimly, then a light front lights letters up
+        var dim = 0.16 * clamp((el - S + 0.5) / 0.5), q = clamp((el - S - i * 0.055) / 0.9), g = Math.sin(Math.PI * q);
+        c.style.opacity = (dim + (1 - dim) * easeOut(q)).toFixed(3);
+        c.style.textShadow = g > 0.01 ? '0 0 ' + (12 * g).toFixed(1) + 'px rgba(140,190,255,' + (0.9 * g).toFixed(2) + ')' : 'none';
+      } else if (mode === 'decode') {                          // random symbols settle into the real letters left to right
+        var SD = 0.38;                                        // right after the title starts (same slot as the tagline in the dissolve)
+        var start = SD + i * 0.022, settle = SD + 0.3 + i * 0.035;
+        if (el < start) { c.style.opacity = '0'; return; }
+        c.style.opacity = '1';
+        var txt = ORIG[i];
+        if (el < settle && !/\s/.test(txt)) txt = GLYPHS.charAt(Math.floor(el * 18 + i * 7.3) % GLYPHS.length);
+        if (c.textContent !== txt) c.textContent = txt;
+        c.style.color = txt === ORIG[i] ? '' : 'rgba(255,255,255,0.5)';   // scrambled symbols: #ffffff at 50%
+      }
+    });
+  }
+  var modeBtns = Array.prototype.slice.call(document.querySelectorAll('[data-mode]'));
+  function setMode(m) {
+    mode = m; tagEl.className = 'tag m-' + m;
+    var at = document.querySelector('.a-text'); at.classList.toggle('m-fade', m === 'fade' || m === 'decode'); at.classList.toggle('m-dec', m === 'decode');
+    modeBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); });
+    resetTag();
+    if (m === 'decode') chars.forEach(function (c) { c.style.width = c.offsetWidth + 'px'; });  // fixed widths: no jitter
+    replay();
+  }
+  modeBtns.forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); }); });
+  // final: decoder only
+  setMode('decode');
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {   // re-measure letter widths once Onest is loaded
+    if (readyAt === null) { resetTag(); chars.forEach(function (c) { c.style.width = c.offsetWidth + 'px'; }); }
+  });
 
   function replay() {
     screen.classList.add('no-tr'); screen.classList.remove('ready');
